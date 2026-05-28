@@ -1,0 +1,137 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@theme {
+  --color-error-container: #93000a;
+  --color-on-tertiary: #00363f;
+  --color-error: #ffb4ab;
+  --color-primary-fixed: #d9e2ff;
+  --color-on-primary-container: #002661;
+  --color-on-primary: #002d6f;
+  --color-tertiary-fixed-dim: #00daf8;
+  --color-on-surface-variant: #c2c6d8;
+  --color-surface-container-lowest: #0e0e10;
+  --color-tertiary: #00daf8;
+  --color-surface-container-low: #1b1b1d;
+  --color-secondary-fixed-dim: #d2bbff;
+  --color-secondary-fixed: #eaddff;
+  --color-inverse-on-surface: #303032;
+  --color-secondary-container: #6001d1;
+  --color-inverse-primary: #0058cb;
+  --color-on-tertiary-container: #002f37;
+  --color-surface-container: #1f1f21;
+  --color-background: #131315;
+  --color-on-secondary-fixed: #25005a;
+  --color-surface-dim: #131315;
+  --color-surface: #131315;
+  --color-primary-fixed-dim: #b0c6ff;
+  --color-on-error: #690005;
+  --color-inverse-surface: #e5e1e4;
+  --color-on-primary-fixed: #001945;
+  --color-on-tertiary-fixed: #001f25;
+  --color-surface-container-highest: #353437;
+  --color-on-primary-fixed-variant: #00429c;
+  --color-on-secondary: #3f008e;
+  --color-on-surface: #e5e1e4;
+  --color-primary-container: #568dff;
+  --color-on-error-container: #ffdad6;
+  --color-on-background: #e5e1e4;
+  --color-outline-variant: #424655;
+  --color-surface-container-high: #2a2a2c;
+  --color-on-secondary-fixed-variant: #5a00c6;
+  --color-outline: #8c90a1;
+  --color-surface-tint: #b0c6ff;
+  --color-primary: #b0c6ff;
+  --color-surface-bright: #39393b;
+  --color-secondary: #d2bbff;
+  --color-surface-variant: #353437;
+  --color-tertiary-fixed: #a5eeff;
+  --color-on-secondary-container: #c9aeff;
+  --color-tertiary-container: #009fb5;
+  --color-on-tertiary-fixed-variant: #004e5a;
+  
+  --spacing-panel-padding: 20px;
+  --spacing-gutter: 16px;
+  --spacing-margin-mobile: 16px;
+  --spacing-stack-gap: 8px;
+  --spacing-margin-desktop: 32px;
+  --spacing-base: 4px;
+  
+  --font-headline-md: Geist, sans-serif;
+  --font-code-sm: JetBrains Mono, monospace;
+  --font-body-lg: Geist, sans-serif;
+  --font-display-lg: Geist, sans-serif;
+  --font-headline-lg: Geist, sans-serif;
+  --font-label-xs: JetBrains Mono, monospace;
+  --font-body-md: Geist, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-body-md antialiased min-h-screen;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(20, 20, 22, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply border border-outline-variant;
+  }
+  
+  .inner-glow {
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .primary-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  }
+  
+  .primary-gradient-bg {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 10px var(--color-primary), inset 0 0 5px var(--color-primary);
+  }
+  
+  .neon-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30;
+  }
+
+  .animated-line {
+    stroke-dasharray: 10;
+    animation: dash 2s linear infinite;
+  }
+
+  .pulse-dot {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -20; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-surface-container-highest;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-outline-variant rounded-full border-[1px] border-solid border-surface-container-highest;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-outline;
+}

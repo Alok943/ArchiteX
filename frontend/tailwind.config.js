@@ -1,0 +1,97 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  darkMode: "class",
+  theme: {
+      extend: {
+          "colors": {
+              "error-container": "#93000a",
+              "on-tertiary": "#00363f",
+              "error": "#ffb4ab",
+              "primary-fixed": "#d9e2ff",
+              "on-primary-container": "#002661",
+              "on-primary": "#002d6f",
+              "tertiary-fixed-dim": "#00daf8",
+              "on-surface-variant": "#c2c6d8",
+              "surface-container-lowest": "#0e0e10",
+              "tertiary": "#00daf8",
+              "surface-container-low": "#1b1b1d",
+              "secondary-fixed-dim": "#d2bbff",
+              "secondary-fixed": "#eaddff",
+              "inverse-on-surface": "#303032",
+              "secondary-container": "#6001d1",
+              "inverse-primary": "#0058cb",
+              "on-tertiary-container": "#002f37",
+              "surface-container": "#1f1f21",
+              "background": "#131315",
+              "on-secondary-fixed": "#25005a",
+              "surface-dim": "#131315",
+              "surface": "#131315",
+              "primary-fixed-dim": "#b0c6ff",
+              "on-error": "#690005",
+              "inverse-surface": "#e5e1e4",
+              "on-primary-fixed": "#001945",
+              "on-tertiary-fixed": "#001f25",
+              "surface-container-highest": "#353437",
+              "on-primary-fixed-variant": "#00429c",
+              "on-secondary": "#3f008e",
+              "on-surface": "#e5e1e4",
+              "primary-container": "#568dff",
+              "on-error-container": "#ffdad6",
+              "on-background": "#e5e1e4",
+              "outline-variant": "#424655",
+              "surface-container-high": "#2a2a2c",
+              "on-secondary-fixed-variant": "#5a00c6",
+              "outline": "#8c90a1",
+              "surface-tint": "#b0c6ff",
+              "primary": "#b0c6ff",
+              "surface-bright": "#39393b",
+              "secondary": "#d2bbff",
+              "surface-variant": "#353437",
+              "tertiary-fixed": "#a5eeff",
+              "on-secondary-container": "#c9aeff",
+              "tertiary-container": "#009fb5",
+              "on-tertiary-fixed-variant": "#004e5a"
+          },
+          "borderRadius": {
+              "DEFAULT": "0.25rem",
+              "sm": "0.25rem",
+              "md": "0.5rem",
+              "lg": "0.75rem",
+              "xl": "1rem",
+              "2xl": "1.5rem",
+              "full": "9999px"
+          },
+          "spacing": {
+              "panel-padding": "20px",
+              "gutter": "16px",
+              "margin-mobile": "16px",
+              "stack-gap": "8px",
+              "margin-desktop": "32px",
+              "base": "4px"
+          },
+          "fontFamily": {
+              "headline-md": ["Geist", "sans-serif"],
+              "code-sm": ["JetBrains Mono", "monospace"],
+              "body-lg": ["Geist", "sans-serif"],
+              "display-lg": ["Geist", "sans-serif"],
+              "headline-lg": ["Geist", "sans-serif"],
+              "label-xs": ["JetBrains Mono", "monospace"],
+              "body-md": ["Geist", "sans-serif"]
+          },
+          "fontSize": {
+              "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+              "code-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+              "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+              "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+              "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+              "label-xs": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+              "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+      }
+  },
+  plugins: [],
+}
