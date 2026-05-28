@@ -1,0 +1,21 @@
+prompt_id,type,success,retries,latency_ms,status_code,error
+R01,REAL,Fail,0,1850,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R02,REAL,Fail,0,1667,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R03,REAL,Fail,0,1225,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R04,REAL,Fail,0,1308,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R05,REAL,Fail,0,1465,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R06,REAL,Fail,0,1358,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R07,REAL,Fail,0,1427,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R08,REAL,Fail,0,1594,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R09,REAL,Fail,0,1735,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+R10,REAL,Fail,0,1659,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E01,EDGE,Clarification,0,283,422,Clarification needed
+E02,EDGE,Fail,0,947,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E03,EDGE,Fail,0,741,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E04,EDGE,Fail,0,2333,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E05,EDGE,Clarification,0,487,422,Clarification needed
+E06,EDGE,Fail,0,1025,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E07,EDGE,Clarification,0,2350,422,Clarification needed
+E08,EDGE,Fail,0,5886,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E09,EDGE,Fail,0,5297,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 400 - {'error': {'message': 'The model `qwen-qwq-32b` has been decommissioned and is no longer supported. Please refer to https://console.gr"
+E10,EDGE,Clarification,0,2397,422,Clarification needed

@@ -1,0 +1,21 @@
+prompt_id,type,success,retries,latency_ms,status_code,error
+R01,REAL,Pass,0,5006,200,
+R02,REAL,Pass,0,4467,200,
+R03,REAL,Fail,0,1758,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R04,REAL,Fail,0,1615,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R05,REAL,Fail,0,1905,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R06,REAL,Fail,0,1635,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R07,REAL,Fail,0,1962,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R08,REAL,Fail,0,2017,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R09,REAL,Fail,0,1749,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+R10,REAL,Fail,0,3951,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E01,EDGE,Clarification,0,647,422,Clarification needed
+E02,EDGE,Fail,0,1155,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E03,EDGE,Fail,0,2885,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E04,EDGE,Fail,0,2742,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E05,EDGE,Fail,0,1398,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E06,EDGE,Fail,0,1070,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E07,EDGE,Clarification,0,708,422,Clarification needed
+E08,EDGE,Fail,0,2121,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E09,EDGE,Fail,0,1482,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
+E10,EDGE,Fail,0,1347,500,"{""detail"":{""error"":""PIPELINE_FAILED"",""message"":""Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk7esq7sffpa167gc7vygpws` service"
