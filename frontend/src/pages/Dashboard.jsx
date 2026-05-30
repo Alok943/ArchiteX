@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Activity, Clock, FileJson2, Cpu, Inbox } from 'lucide-react';
+import { Play, Activity, Clock, FileJson2, Cpu, Inbox, Brain, Layers, ShieldCheck, CheckCircle } from 'lucide-react';
 import { GlassCard } from '../components/ui/GlassCard';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { MetricDisplay } from '../components/ui/MetricDisplay';
@@ -17,6 +17,15 @@ function formatTimeAgo(isoString) {
   const days = Math.floor(hours / 24);
   return `${days}d ago`;
 }
+
+const PIPELINE_STAGES = [
+  { id: 1, name: 'Intent',   label: 'Intent Extraction',   icon: Brain,       color: 'text-primary',   border: 'border-primary/60',   bg: 'bg-primary/10'   },
+  { id: 2, name: 'Design',   label: 'System Design',       icon: Cpu,         color: 'text-secondary', border: 'border-secondary/60', bg: 'bg-secondary/10' },
+  { id: 3, name: 'Schema',   label: 'Schema Generation',   icon: FileJson2,   color: 'text-tertiary',  border: 'border-tertiary/60',  bg: 'bg-tertiary/10'  },
+  { id: 4, name: 'Validate', label: 'Business Validation', icon: ShieldCheck, color: 'text-[#f59e0b]', border: 'border-[#f59e0b]/60',  bg: 'bg-[#f59e0b]/10' },
+  { id: 5, name: 'Repair',   label: 'Surgical Repair',     icon: Layers,      color: 'text-[#f97316]', border: 'border-[#f97316]/60',  bg: 'bg-[#f97316]/10' },
+  { id: 6, name: 'Output',   label: 'Schema Output',       icon: CheckCircle, color: 'text-green-400', border: 'border-green-400/60',  bg: 'bg-green-400/10' },
+];
 
 export function Dashboard() {
   const [history, setHistory] = useState([]);
@@ -64,54 +73,75 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Pipeline Visualization */}
+        {/* 6-Stage Pipeline Visualization */}
         <GlassCard className="lg:col-span-2 p-panel-padding">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="font-headline-md text-on-surface">Live Pipeline Topology</h2>
-            <StatusBadge status="running" label="System Healthy" />
+            <h2 className="font-headline-md text-on-surface">Compiler Pipeline</h2>
+            <StatusBadge status="running" label="6-Stage Architecture" />
           </div>
           
-          <div className="relative h-64 bg-surface-container-lowest rounded-lg border border-outline-variant/30 flex items-center justify-between p-8 overflow-hidden">
-            {/* Background Grid Pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-            
-            {/* Node 1 */}
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-surface-container-highest border border-outline flex items-center justify-center neon-glow">
-                <FileJson2 className="w-8 h-8 text-primary" />
-              </div>
-              <span className="mt-4 font-label-xs text-on-surface-variant">NL Prompt</span>
+          {/* Pipeline stages — horizontal scroll on mobile */}
+          <div className="relative bg-surface-container-lowest rounded-lg border border-outline-variant/30 p-6 overflow-x-auto">
+            {/* Background Grid */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] rounded-lg" />
+
+            <div className="relative z-10 flex items-center min-w-[560px]">
+              {PIPELINE_STAGES.map((stage, idx) => {
+                const Icon = stage.icon;
+                const isCenter = idx === 2; // Schema is the "core" stage
+                return (
+                  <div key={stage.id} className="flex items-center flex-1">
+                    {/* Stage Node */}
+                    <div className="flex flex-col items-center gap-2 shrink-0">
+                      <div className={`
+                        relative flex items-center justify-center rounded-xl border-2 transition-all duration-300
+                        ${isCenter ? 'w-14 h-14' : 'w-11 h-11'}
+                        ${stage.bg} ${stage.border}
+                        ${isCenter ? 'shadow-[0_0_20px_rgba(176,198,255,0.2)]' : ''}
+                      `}>
+                        {isCenter && (
+                          <div className={`absolute inset-0 rounded-xl ${stage.bg} pulse-dot opacity-50`} />
+                        )}
+                        <Icon className={`${isCenter ? 'w-7 h-7' : 'w-5 h-5'} ${stage.color} relative z-10`} />
+                      </div>
+                      <div className="text-center">
+                        <div className={`font-label-xs font-bold tracking-wider ${stage.color} text-[10px] uppercase`}>
+                          {stage.name}
+                        </div>
+                        <div className="font-label-xs text-on-surface-variant text-[9px] mt-0.5 hidden lg:block whitespace-nowrap">
+                          {stage.label}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Connector arrow (not on last stage) */}
+                    {idx < PIPELINE_STAGES.length - 1 && (
+                      <div className="flex-1 relative h-px mx-2">
+                        <svg className="absolute w-full h-full overflow-visible" preserveAspectRatio="none">
+                          <line
+                            x1="0" y1="0" x2="100%" y2="0"
+                            stroke={`var(--color-outline-variant)`}
+                            strokeWidth="1.5"
+                            strokeDasharray="4 4"
+                            className="animated-line"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Connector 1 */}
-            <div className="relative flex-1 h-px mx-4">
-              <svg className="absolute w-full h-full overflow-visible" preserveAspectRatio="none">
-                <line x1="0" y1="0" x2="100%" y2="0" stroke="var(--color-primary)" strokeWidth="2" className="animated-line" />
-              </svg>
-            </div>
-
-            {/* Node 2 */}
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="w-20 h-20 rounded-2xl bg-primary/20 border-2 border-primary flex items-center justify-center relative">
-                <div className="absolute inset-0 rounded-2xl bg-primary pulse-dot opacity-20"></div>
-                <Cpu className="w-10 h-10 text-primary z-10" />
-              </div>
-              <span className="mt-4 font-label-xs text-primary">Compiler Core</span>
-            </div>
-
-            {/* Connector 2 */}
-            <div className="relative flex-1 h-px mx-4">
-              <svg className="absolute w-full h-full overflow-visible" preserveAspectRatio="none">
-                <line x1="0" y1="0" x2="100%" y2="0" stroke="var(--color-primary)" strokeWidth="2" strokeDasharray="4 4" className="animated-line opacity-50" />
-              </svg>
-            </div>
-
-            {/* Node 3 */}
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-surface-container-highest border border-outline flex items-center justify-center">
-                <FileJson2 className="w-8 h-8 text-on-surface-variant" />
-              </div>
-              <span className="mt-4 font-label-xs text-on-surface-variant">Schema Out</span>
+            {/* Stage labels row (bottom) */}
+            <div className="relative z-10 flex items-start mt-4 min-w-[560px]">
+              {PIPELINE_STAGES.map((stage, idx) => (
+                <div key={stage.id} className="flex-1 flex flex-col items-center">
+                  <span className="font-code-sm text-on-surface-variant/50 text-[10px]">
+                    Stage {stage.id}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </GlassCard>

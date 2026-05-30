@@ -1,8 +1,44 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, TrendingDown, Zap, Activity, Inbox } from 'lucide-react';
+import { BarChart3, TrendingDown, Zap, Activity, Inbox, ShieldCheck } from 'lucide-react';
 import { GlassCard } from '../components/ui/GlassCard';
 import { MetricDisplay } from '../components/ui/MetricDisplay';
 import { getHistory } from '../lib/api';
+
+/** Derive a 0-100 consistency score from run history */
+function computeConsistency(history) {
+  if (history.length === 0) return null;
+  const TOTAL_VALIDATORS = 7;
+  const totalPossible = history.length * TOTAL_VALIDATORS;
+  const totalErrors = history.reduce((sum, h) => sum + (h.validation_errors?.length || 0), 0);
+  const score = Math.max(0, Math.min(100, ((totalPossible - totalErrors) / totalPossible) * 100));
+
+  // Per-dimension scores heuristically derived from error rules
+  const ruleCounts = { feature: 0, fk: 0, crud: 0, auth: 0, entity: 0, analytics: 0, role: 0 };
+  history.forEach((h) => {
+    (h.validation_errors || []).forEach((err) => {
+      const rule = (typeof err === 'string' ? err : err.rule || err.layer || '').toLowerCase();
+      if (rule.includes('feature') || rule.includes('coverage')) ruleCounts.feature++;
+      else if (rule.includes('fk') || rule.includes('foreign') || rule.includes('reference')) ruleCounts.fk++;
+      else if (rule.includes('crud') || rule.includes('endpoint')) ruleCounts.crud++;
+      else if (rule.includes('auth') || rule.includes('login') || rule.includes('register')) ruleCounts.auth++;
+      else if (rule.includes('entity') || rule.includes('ui') || rule.includes('screen')) ruleCounts.entity++;
+      else if (rule.includes('analytics') || rule.includes('metric')) ruleCounts.analytics++;
+      else if (rule.includes('role') || rule.includes('premium') || rule.includes('rbac')) ruleCounts.role++;
+    });
+  });
+
+  const dims = [
+    { label: 'Feature Coverage',   key: 'feature',   errors: ruleCounts.feature },
+    { label: 'FK Integrity',       key: 'fk',        errors: ruleCounts.fk },
+    { label: 'CRUD Completeness',  key: 'crud',       errors: ruleCounts.crud },
+    { label: 'Auth Completeness',  key: 'auth',       errors: ruleCounts.auth },
+    { label: 'Entity–UI Mapping',  key: 'entity',     errors: ruleCounts.entity },
+    { label: 'Analytics Rules',    key: 'analytics',  errors: ruleCounts.analytics },
+    { label: 'Role Consistency',   key: 'role',       errors: ruleCounts.role },
+  ];
+
+  return { score: Math.round(score), dims };
+}
 
 export function Metrics() {
   const [history, setHistory] = useState([]);
@@ -47,6 +83,9 @@ export function Metrics() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 
+  // Consistency score
+  const consistency = computeConsistency(history);
+
   // Build chart data from last 7 runs (or fewer)
   const chartRuns = history.slice(0, 7).reverse();
   const maxLatency = chartRuns.length > 0
@@ -81,7 +120,47 @@ export function Metrics() {
           <p className="text-on-surface-variant font-label-xs">No compilation data yet. Run a compilation to see metrics.</p>
         </GlassCard>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[400px]">
+        <div className="flex flex-col gap-6">
+
+          {/* Consistency Score Panel */}
+          {consistency && (
+            <GlassCard className="p-panel-padding">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className={`w-6 h-6 ${consistency.score >= 80 ? 'text-green-400' : consistency.score >= 60 ? 'text-[#f59e0b]' : 'text-error'}`} />
+                  <h2 className="font-headline-md text-on-surface">Consistency Score</h2>
+                </div>
+                <div className={`text-3xl font-bold font-code-sm ${
+                  consistency.score >= 80 ? 'text-green-400' : consistency.score >= 60 ? 'text-[#f59e0b]' : 'text-error'
+                }`}>{consistency.score}%</div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {consistency.dims.map((dim) => {
+                  const maxErrors = Math.max(...consistency.dims.map(d => d.errors), 1);
+                  const dimScore = Math.round(Math.max(0, 100 - (dim.errors / Math.max(history.length, 1)) * 100));
+                  const color = dimScore >= 80 ? 'bg-green-400' : dimScore >= 60 ? 'bg-[#f59e0b]' : 'bg-error';
+                  return (
+                    <div key={dim.key} className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-label-xs text-on-surface-variant text-[10px] uppercase tracking-wider">{dim.label}</span>
+                        <span className={`font-code-sm text-xs font-bold ${
+                          dimScore >= 80 ? 'text-green-400' : dimScore >= 60 ? 'text-[#f59e0b]' : 'text-error'
+                        }`}>{dimScore}%</span>
+                      </div>
+                      <div className="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-700 ${color}`}
+                          style={{ width: `${dimScore}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </GlassCard>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[400px]">
           {/* Main Chart Area */}
           <GlassCard className="lg:col-span-2 p-panel-padding flex flex-col">
             <div className="flex items-center justify-between mb-8">
@@ -165,6 +244,7 @@ export function Metrics() {
             )}
           </GlassCard>
         </div>
+          </div>
       )}
     </div>
   );
