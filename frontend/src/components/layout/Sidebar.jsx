@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, CheckCircle, TerminalSquare, BarChart2, Shield } from 'lucide-react';
+import { LayoutDashboard, CheckCircle, TerminalSquare, BarChart2 } from 'lucide-react';
 import clsx from 'clsx';
 
 const navItems = [
@@ -14,14 +14,7 @@ export function Sidebar() {
     <>
       {/* Desktop/Tablet Sidebar */}
       <nav className="hidden md:flex flex-col bg-surface-container border-r border-outline-variant h-full fixed left-0 top-0 z-50 transition-all duration-300 w-16 xl:hover:w-60 group">
-        <div className="flex items-center h-16 px-4 shrink-0 overflow-hidden border-b border-outline-variant/50">
-          <Shield className="w-8 h-8 text-primary shrink-0" />
-          <span className="ml-4 font-headline-md text-primary-gradient-text whitespace-nowrap opacity-0 xl:group-hover:opacity-100 transition-opacity duration-300">
-            Architex
-          </span>
-        </div>
-        
-        <div className="flex-1 py-4 flex flex-col gap-2 px-2 overflow-hidden">
+        <div className="flex-1 py-6 flex flex-col gap-2 px-2 overflow-hidden">
           {navItems.map((item) => (
             <NavLink
               key={item.path}

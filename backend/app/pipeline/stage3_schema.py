@@ -1,6 +1,9 @@
+import logging
 from app.core.llm_client import call_llm
 from app.schemas.intermediate import IntentOutput, DesignOutput
 from app.schemas.output import AppConfig
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """
 You are an expert software architect specializing in generating complete application schemas.
@@ -95,11 +98,12 @@ DESIGN:
 Be precise. Every cross-layer reference must be consistent.
 """
 
+    logger.info("Stage 3 — Generating full AppConfig schema")
     raw = await call_llm(
         stage=3,
         system_prompt=SYSTEM_PROMPT,
         user_message=user_message,
         max_tokens=8192,
     )
-
+    logger.info(f"Stage 3 — Generated schema with {len(raw.get('db_schema', []))} tables, {len(raw.get('api_schema', []))} endpoints, {len(raw.get('ui_schema', []))} pages")
     return raw  # raw dict — Pydantic validation happens in Stage 4

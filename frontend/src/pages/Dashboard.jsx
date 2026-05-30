@@ -1,9 +1,43 @@
-import { Play, Activity, Clock, FileJson2, Cpu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Play, Activity, Clock, FileJson2, Cpu, Inbox } from 'lucide-react';
 import { GlassCard } from '../components/ui/GlassCard';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { MetricDisplay } from '../components/ui/MetricDisplay';
+import { getHistory } from '../lib/api';
+
+function formatTimeAgo(isoString) {
+  const diff = Date.now() - new Date(isoString).getTime();
+  const seconds = Math.floor(diff / 1000);
+  if (seconds < 60) return 'Just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
 
 export function Dashboard() {
+  const [history, setHistory] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHistory(getHistory());
+  }, []);
+
+  const totalRuns = history.length;
+  const successRuns = history.filter((h) => h.status === 'success').length;
+  const successRate = totalRuns > 0 ? ((successRuns / totalRuns) * 100).toFixed(1) : '0.0';
+  const avgRetries =
+    totalRuns > 0
+      ? (history.reduce((sum, h) => sum + (h.retry_count || 0), 0) / totalRuns).toFixed(1)
+      : '0';
+  const avgLatency =
+    totalRuns > 0
+      ? (history.reduce((sum, h) => sum + (h.latency_ms || 0), 0) / totalRuns / 1000).toFixed(1)
+      : '0';
+
   return (
     <div className="flex flex-col gap-8 h-full animate-in fade-in duration-500">
       
@@ -13,7 +47,10 @@ export function Dashboard() {
           <h1 className="font-headline-lg primary-gradient-text">Architex Pipeline</h1>
           <p className="text-on-surface-variant mt-2 font-code-sm">Compiler pipeline overview and recent job history.</p>
         </div>
-        <button className="bg-primary hover:bg-primary/90 text-on-primary px-6 py-2.5 rounded-lg font-label-xs font-bold tracking-widest flex items-center justify-center gap-2 transition-colors neon-glow neon-focus">
+        <button
+          onClick={() => navigate('/playground')}
+          className="bg-primary hover:bg-primary/90 text-on-primary px-6 py-2.5 rounded-lg font-label-xs font-bold tracking-widest flex items-center justify-center gap-2 transition-colors neon-glow neon-focus"
+        >
           <Play className="w-4 h-4" />
           <span>New Compilation</span>
         </button>
@@ -21,9 +58,9 @@ export function Dashboard() {
 
       {/* Top Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <MetricDisplay label="Active Jobs" value="3" icon={Activity} />
-        <MetricDisplay label="Avg Latency" value="1.2s" trend="-0.4s" icon={Clock} />
-        <MetricDisplay label="Success Rate" value="98.4%" trend="+1.2%" icon={CheckCircle} />
+        <MetricDisplay label="Total Runs" value={String(totalRuns)} icon={Activity} />
+        <MetricDisplay label="Avg Latency" value={`${avgLatency}s`} trend={totalRuns > 1 ? `${avgRetries} avg retries` : undefined} icon={Clock} />
+        <MetricDisplay label="Success Rate" value={`${successRate}%`} trend={totalRuns > 0 ? `${successRuns}/${totalRuns} passed` : undefined} icon={CheckCircleIcon} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -84,23 +121,30 @@ export function Dashboard() {
           <h2 className="font-headline-md text-on-surface mb-6">Recent Jobs</h2>
           
           <div className="flex-1 overflow-y-auto pr-2 -mr-2">
-            <div className="flex flex-col gap-3">
-              {[
-                { id: 'job_4821', time: 'Just now', status: 'running', schema: 'User_Profile' },
-                { id: 'job_4820', time: '2m ago', status: 'success', schema: 'Payment_Event' },
-                { id: 'job_4819', time: '15m ago', status: 'success', schema: 'Auth_Token' },
-                { id: 'job_4818', time: '1h ago', status: 'failed', schema: 'Legacy_Import' },
-                { id: 'job_4817', time: '2h ago', status: 'success', schema: 'Invoice_Gen' },
-              ].map((job) => (
-                <div key={job.id} className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 flex items-center justify-between hover:border-primary/50 transition-colors cursor-pointer group">
-                  <div>
-                    <div className="font-code-sm text-on-surface group-hover:text-primary transition-colors">{job.id}</div>
-                    <div className="font-label-xs text-on-surface-variant mt-1">{job.schema} • {job.time}</div>
+            {history.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full gap-3 text-on-surface-variant">
+                <Inbox className="w-10 h-10 opacity-40" />
+                <p className="font-label-xs text-center">No compilations yet.</p>
+                <button
+                  onClick={() => navigate('/playground')}
+                  className="text-primary font-label-xs hover:underline"
+                >
+                  Go to Playground →
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {history.slice(0, 10).map((job) => (
+                  <div key={job.id} className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 flex items-center justify-between hover:border-primary/50 transition-colors cursor-pointer group">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-code-sm text-on-surface group-hover:text-primary transition-colors truncate">{job.id}</div>
+                      <div className="font-label-xs text-on-surface-variant mt-1 truncate">{job.prompt?.slice(0, 40) || 'N/A'} • {formatTimeAgo(job.time)}</div>
+                    </div>
+                    <StatusBadge status={job.status} label={job.status === 'success' ? 'OK' : job.status} />
                   </div>
-                  <StatusBadge status={job.status} label={job.status === 'success' ? 'OK' : job.status} />
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </GlassCard>
       </div>
@@ -109,7 +153,7 @@ export function Dashboard() {
   );
 }
 
-function CheckCircle(props) {
+function CheckCircleIcon(props) {
   return (
     <svg
       {...props}

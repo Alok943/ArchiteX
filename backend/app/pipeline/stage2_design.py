@@ -1,5 +1,8 @@
+import logging
 from app.core.llm_client import call_llm
 from app.schemas.intermediate import IntentOutput, DesignOutput
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """
 You are an expert software architect specializing in system design.
@@ -35,10 +38,12 @@ async def run_stage2(intent: IntentOutput) -> DesignOutput:
     Input: IntentOutput from Stage 1
     Output: DesignOutput (validated Pydantic model)
     """
+    logger.info(f"Stage 2 — Designing system architecture")
     raw = await call_llm(
         stage=2,
         system_prompt=SYSTEM_PROMPT,
         user_message=f"Design the system architecture for this intent:\n\n{intent.model_dump_json(indent=2)}",
     )
-
-    return DesignOutput(**raw)
+    result = DesignOutput(**raw)
+    logger.info(f"Stage 2 — Designed {len(result.pages)} pages, {len(result.api_groups)} API groups, {len(result.db_tables)} tables")
+    return result

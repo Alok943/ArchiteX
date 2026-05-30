@@ -1,5 +1,8 @@
+import logging
 from app.core.llm_client import call_llm
 from app.schemas.intermediate import IntentOutput
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """
 You are an expert software architect specializing in intent extraction.
@@ -34,10 +37,14 @@ async def run_stage1(prompt: str) -> IntentOutput:
     Input: raw user prompt
     Output: IntentOutput (validated Pydantic model)
     """
+    logger.info(f"Stage 1 — Extracting intent from prompt ({len(prompt)} chars)")
     raw = await call_llm(
         stage=1,
         system_prompt=SYSTEM_PROMPT,
         user_message=f"Extract the intent from this app description:\n\n{prompt}",
     )
-
-    return IntentOutput(**raw)
+    result = IntentOutput(**raw)
+    logger.info(f"Stage 1 — Extracted {len(result.entities)} entities, {len(result.roles)} roles, {len(result.features)} features")
+    if result.clarification_needed:
+        logger.warning(f"Stage 1 — Clarification needed: {result.clarification_questions}")
+    return result

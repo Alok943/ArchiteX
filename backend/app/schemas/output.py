@@ -76,7 +76,7 @@ class AuthRule(BaseModel):
 
 class ValidationError(BaseModel):
     rule: str                                    # e.g. "R1", "R2"
-    layer: Literal["db", "api", "ui", "auth"]
+    layer: Literal["db", "api", "ui", "auth", "global"]
     message: str
     field: Optional[str] = None                  # specific broken field/reference
 
