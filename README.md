@@ -2,7 +2,7 @@
   <img src="frontend/public/logo.png" alt="ArchiteX Logo" width="200" />
 </p>
 
-<h1 align="center">ArchiteX</h1>
+#<h1 align="center">ArchiteX</h1>#
 
 <p align="center">
   <em>An intelligent, multi-stage compiler pipeline that transforms natural language into production-ready application configurations.</em>
